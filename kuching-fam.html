@@ -397,6 +397,8 @@ footer a{color:#9DE3DA;font-weight:700}
     var c = document.getElementById(id);
     c.addEventListener("change", function(){
       c.closest(".check").classList.toggle("on", c.checked);
+      var eb = document.getElementById("errBox");
+      if(eb) eb.classList.remove("show");
     });
   });
 
