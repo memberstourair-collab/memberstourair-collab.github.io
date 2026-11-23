@@ -1644,7 +1644,7 @@ const DATA = {"tours":[{"id":"pc01","code":"MTA-D01","cat":"day","badges":["bus"
       lines.push({ label: t('quote.line.hotel', { name: t('quote.hotel.' + hotel.key), r: rooms, m: nights }), amount: hAmt });
       total += hAmt;
     }
-    var extra = Math.max(0, (q.regions || []).length - 1);
+    var extra = (q.svc.vehicle || q.svc.guide) ? Math.max(0, (q.regions || []).length - 1) : 0;
     if (extra > 0) {
       var rAmt = QUOTE.regionDay * extra * days;
       lines.push({ label: t('quote.line.region', { n: q.regions.length }), amount: rAmt });
@@ -2104,6 +2104,7 @@ const DATA = {"tours":[{"id":"pc01","code":"MTA-D01","cat":"day","badges":["bus"
     var err = $('#formErr');
     var problems = [];
     if (kind === 'quote' && (!data.agency || data.agency.length < 2)) problems.push(t('quote.errAgency'));
+    if (kind === 'quote' && !qCalc().lines.length) problems.push(t('quote.est.empty'));
     if (!data.name || data.name.length < 2) problems.push(t('form.errName'));
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email || '')) problems.push(t('form.errEmail'));
     if (!data.phone || data.phone.replace(/[^0-9]/g, '').length < 5) problems.push(t('form.errPhone'));
