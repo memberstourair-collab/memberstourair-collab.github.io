@@ -4468,6 +4468,27 @@ const DATA = {"tours":[{"id":"pc01","code":"MTA-D01","cat":"day","badges":["bus"
       }).catch(function () { /* offline cache keeps working */ });
     } catch (e) { /* ignore */ }
   }
+  /* item (camelCase, used by the UI) <-> row (snake_case, the Supabase table) */
+  function lvRow(x) {
+    return {
+      id: x.id, status: x.status, type: x.type, cat: x.cat, creator: x.creator || '',
+      contact: x.contact || '', title: x.title || '', desc: x.desc || '',
+      url: x.url || '', yt: x.yt || '', platform: x.platform || '',
+      title_key: x.titleKey || null, desc_key: x.descKey || null,
+      upcoming: !!x.upcoming, source: x.source || '', seed: !!x.seed,
+      created_at: x.createdAt || new Date().toISOString(), decided_at: x.decidedAt || null
+    };
+  }
+  function lvItem(r) {
+    return {
+      id: r.id, status: r.status, type: r.type, cat: r.cat, creator: r.creator || '',
+      contact: r.contact || '', title: r.title || '', desc: r.desc || '',
+      url: r.url || '', yt: r.yt || '', platform: r.platform || '',
+      titleKey: r.title_key || '', descKey: r.desc_key || '',
+      upcoming: !!r.upcoming, source: r.source || '', seed: !!r.seed,
+      createdAt: r.created_at || '', decidedAt: r.decided_at || ''
+    };
+  }
   function lvStoreRead() {
     var raw = readStore(VIDEO_KEY, null);
     if (!raw || !raw.list || !raw.list.length) {
@@ -4493,7 +4514,7 @@ const DATA = {"tours":[{"id":"pc01","code":"MTA-D01","cat":"day","badges":["bus"
     for (var i = 0; i < list.length; i++) if (list[i].id === item.id) { list[i] = item; hit = true; }
     if (!hit) list.unshift(item);
     lvStoreWrite(list);
-    lvSbSend('POST', '?on_conflict=id', item, 'resolution=merge-duplicates,return=minimal');
+    lvSbSend('POST', '?on_conflict=id', lvRow(item), 'resolution=merge-duplicates,return=minimal');
   }
   function lvRemove(id) {
     var list = lvAll().filter(function (x) { return x.id !== id; });
@@ -4511,7 +4532,7 @@ const DATA = {"tours":[{"id":"pc01","code":"MTA-D01","cat":"day","badges":["bus"
       return r.json();
     }).then(function (rows) {
       if (Array.isArray(rows) && rows.length) {
-        lvStoreWrite(rows);
+        lvStoreWrite(rows.map(lvItem));
         renderView('live'); renderView('partner'); applyChrome();
       }
       return true;
