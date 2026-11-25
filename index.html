@@ -8896,6 +8896,7 @@ var GENIE_AI_CONFIG = {
   var store = null;
   var open = false;
   var busy = false;
+  var turn = 0;
 
   /* ------------------------------------------------------------- helpers */
   function lang() {
@@ -9476,13 +9477,15 @@ var GENIE_AI_CONFIG = {
       }, 320);
     }, 220);
   }
+  var TABS = ['tours', 'outbound', 'live', 'flights', 'hotels', 'quote', 'bookings',
+    'insurance', 'partner', 'account'];
   function runAction(kind, value) {
     if (kind === 'tour') {
       closeDrawer();
       setTimeout(function () { if (window.__MK && window.__MK.tourOpen) window.__MK.tourOpen(value); }, 160);
       return;
     }
-    if (kind === 'tab') { goTab(value || 'tours'); return; }
+    if (kind === 'tab') { goTab(TABS.indexOf(value) >= 0 ? value : 'tours'); return; }
     if (kind === 'qa') {
       closeDrawer();
       if (window.__MK && window.__MK.go) window.__MK.go('#tours');
@@ -9512,7 +9515,11 @@ var GENIE_AI_CONFIG = {
       return;
     }
     if (kind === 'tel') { window.location.href = 'tel:' + CONTACT_TEL; return; }
-    if (kind === 'ext') { window.open(value, '_blank', 'noopener'); return; }
+    if (kind === 'ext') {
+      if (!/^https:\/\//i.test(value) && !/^[a-z0-9-]+\.html$/i.test(value)) return;
+      window.open(value, '_blank', 'noopener');
+      return;
+    }
     if (kind === 'ask') { sendText(value); return; }
   }
   function lastUserText() {
@@ -9533,8 +9540,10 @@ var GENIE_AI_CONFIG = {
     if (inputEl) inputEl.value = '';
     pushMsg({ role: 'user', text: text });
     busy = true;
+    var myTurn = ++turn;
     renderMessages();
     var done = function (res) {
+      if (myTurn !== turn) return;
       busy = false;
       attach(res);
       renderAll();
@@ -9542,6 +9551,7 @@ var GENIE_AI_CONFIG = {
     if (liveOn()) {
       setTimeout(function () {
         askLive(text).then(done).catch(function () {
+          if (myTurn !== turn) return;
           busy = false;
           var fb = answer(text);
           fb.liveFail = true;
@@ -9556,6 +9566,7 @@ var GENIE_AI_CONFIG = {
   function resetChat() {
     store = { v: 1, lang: lang(), messages: [{ role: 'genie', greet: true }] };
     busy = false;
+    turn += 1;
     saveStore();
     renderMessages();
     toast(S('genie.resetDone'));
