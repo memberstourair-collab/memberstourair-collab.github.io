@@ -4938,6 +4938,7 @@ const DATA = {"tours":[{"id":"pc01","code":"MTA-D01","cat":"day","badges":["bus"
     if (head === 'live' && parts[1] === 'watch' && parts[2]) return { tab: 'live', modal: { kind: 'live', id: decodeURIComponent(parts[2]) } };
     if (head === 'live' && parts[1] === 'submit') return { tab: 'live', modal: { kind: 'liveform', id: 'form' } };
     if (head === 'auth') return { tab: state.tab, modal: { kind: 'auth', id: parts[1] || 'signin' } };
+    if (head === 'admin') return { tab: 'partner', modal: null, anchor: 'lvAdmin' };
     if (head === 'signup') return { tab: state.tab, modal: { kind: 'auth', id: 'join' } };
     if (head === 'login') return { tab: state.tab, modal: { kind: 'auth', id: 'signin' } };
     if (TAB_LIST.indexOf(head) >= 0) return { tab: head, modal: null };
@@ -4981,6 +4982,10 @@ const DATA = {"tours":[{"id":"pc01","code":"MTA-D01","cat":"day","badges":["bus"
   function applyRoute() {
     var r = parseRoute();
     if (state.tab !== r.tab) showTab(r.tab, { instant: true });
+    if (r.anchor) {
+      var target = $('#' + r.anchor);
+      if (target) setTimeout(function () { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 80);
+    }
     var key = r.modal ? r.modal.kind + ':' + r.modal.id : '';
     if (key === openKey) {
       if (!key && $('#modal').classList.contains('open')) hideModal();
