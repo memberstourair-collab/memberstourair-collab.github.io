@@ -6269,7 +6269,8 @@ var GENIE_AI_CONFIG = {
       ' data-act="sp-run" data-tab="flights">' +
       ic.search + '<span>' + t('flights.search') + '</span></a>' +
       (multi ? '<p class="sp-note">' + t('sp.fl.multiNote') + '</p>' : '') +
-      '<p class="sp-note">' + t('sp.fl.popular') + ' · ' + t('sp.fl.fare') + ' · ' + t('sp.fl.estNote') + '</p>' +
+      '<p class="sp-note">' + (multi ? t('sp.fl.fare') + ' · ' + t('sp.fl.estNote')
+        : t('sp.fl.popular') + ' · ' + t('sp.fl.fare') + ' · ' + t('sp.fl.estNote')) + '</p>' +
       (multi ? '' : '<div class="sp-tips">' + tips + '</div>' +
         (est ? '<p class="sp-note"><b style="color:var(--navy)">' + state.f.from + ' → ' + state.f.to + '</b> · ' +
           t('sp.fl.fare') + ' ' + money(est) + '</p>' : '')) +
