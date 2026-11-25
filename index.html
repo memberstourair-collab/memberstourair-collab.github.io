@@ -3232,8 +3232,10 @@ var GENIE_AI_CONFIG = {
       (multi ? '' : '<div class="sort-row">' + sorts + '</div>') + '</div>' +
       (multi
         ? '<div class="empty"><h3>' + esc(t('sp.fl.multi')) + '</h3><p>' + esc(t('sp.fl.multiNote')) + '</p>' +
-          '<div style="margin-top:12px"><a class="sp-go' + (badLeg >= 0 ? ' off' : '') + '" data-sp-go="flights" href="' +
-          esc(spTargets().flights) + '" target="_blank" rel="noopener sponsored" data-act="sp-run" data-tab="flights">' +
+          '<div style="margin-top:12px"><a class="sp-go' + (badLeg >= 0 ? ' off' : '') + '" data-sp-go="flights"' +
+          (badLeg >= 0 ? ' aria-disabled="true"'
+                       : ' href="' + esc(spTargets().flights) + '" target="_blank" rel="noopener sponsored"') +
+          ' data-act="sp-run" data-tab="flights">' +
           ic.search + '<span>' + t('flights.search') + '</span></a></div>' +
           (badLeg >= 0 ? '<p class="sp-warn">' + esc(t('sp.fl.legWarn', { n: badLeg + 1 })) + '</p>' : '') + '</div>'
         : (state.f.from === state.f.to
@@ -6032,8 +6034,10 @@ var GENIE_AI_CONFIG = {
   }
   function spRefreshLinks() {
     var T = spTargets();
+    var blocked = state.f.trip === 'multi' && spLegBad(spLegs()) >= 0;
     $$('[data-sp-go]').forEach(function (a) {
       var k = a.getAttribute('data-sp-go');
+      if (k === 'flights' && blocked) return;   /* a broken leg keeps the link unarmed */
       if (T[k]) a.setAttribute('href', T[k]);
     });
   }
@@ -6259,9 +6263,10 @@ var GENIE_AI_CONFIG = {
     return '<form data-form="sp-flights">' + seg + routeFields + spPaxFields() +
       '<label class="sp-check"><input type="checkbox" id="spDirect" data-sp-check="direct"' + (state.f.direct ? ' checked' : '') + '>' +
       '<span>' + t('sp.fl.direct') + '</span></label>' +
-      '<a class="sp-go' + (bad >= 0 ? ' off' : '') + '" data-sp-go="flights" href="' + esc(spTargets().flights) +
-      '" target="_blank" rel="noopener sponsored" data-act="sp-run" data-tab="flights" aria-disabled="' +
-      (bad >= 0 ? 'true' : 'false') + '">' +
+      '<a class="sp-go' + (bad >= 0 ? ' off' : '') + '" data-sp-go="flights"' +
+      (bad >= 0 ? ' aria-disabled="true"'
+                : ' href="' + esc(spTargets().flights) + '" target="_blank" rel="noopener sponsored"') +
+      ' data-act="sp-run" data-tab="flights">' +
       ic.search + '<span>' + t('flights.search') + '</span></a>' +
       (multi ? '<p class="sp-note">' + t('sp.fl.multiNote') + '</p>' : '') +
       '<p class="sp-note">' + t('sp.fl.popular') + ' · ' + t('sp.fl.fare') + ' · ' + t('sp.fl.estNote') + '</p>' +
