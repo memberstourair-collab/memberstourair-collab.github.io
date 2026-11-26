@@ -1672,7 +1672,7 @@ body.modal-open{overflow:hidden}
   --maxw:1140px;
   --ease:cubic-bezier(.22,.61,.36,1);
 }
-body{font-size:15px;line-height:1.55;letter-spacing:-.004em;background:
+body{font-size:15px;line-height:1.55;letter-spacing:-.004em;word-break:keep-all;overflow-wrap:break-word;background:
   radial-gradient(1200px 500px at 50% -240px,#EDF5F4 0%,rgba(246,249,250,0) 70%),var(--bg)}
 
 /* ---------------------------------------------------------- header */
@@ -1737,7 +1737,7 @@ body{font-size:15px;line-height:1.55;letter-spacing:-.004em;background:
   background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.16);color:#B7EEE2;
 }
 .kicker .dot{box-shadow:0 0 0 3px rgba(232,130,107,.22)}
-.hero h1{font-size:clamp(27px,6.8vw,30px);line-height:1.17;letter-spacing:-.035em;font-weight:800;margin:12px 0 9px}
+.hero h1{font-size:clamp(26px,6.6vw,30px);line-height:1.2;letter-spacing:-.035em;font-weight:800;margin:12px 0 9px;text-wrap:balance}
 .hero p{font-size:13.5px;line-height:1.62;color:#CBD9E4;max-width:44ch}
 .hero-cta{gap:9px;margin-top:17px}
 .hero-stats{gap:0;margin-top:19px;flex-wrap:nowrap}
@@ -3684,7 +3684,7 @@ var GENIE_AI_CONFIG = {
         '<span>' + ic.bed + t('ap.beds', { n: h.beds }) + '</span>' +
         (h.weekly ? '<span class="wk">' + ic.cal + t('ap.weekly', { n: h.weekly }) + '</span>' : '') + '</div>' : '') +
       '<div class="hotel-foot">' +
-      '<div class="price"><small>' + t('hotels.from') + '</small><b>' + money(h.price) + '</b><em>' + (h.apt ? t('ap.perResidence') : t('hotels.perNight')) + '</em></div>' +
+      '<div class="price"><small>' + (h.apt ? t('tours.from') : t('hotels.from')) + '</small><b>' + money(h.price) + '</b><em>' + (h.apt ? t('ap.perResidence') : t('hotels.perNight')) + '</em></div>' +
       '<button type="button" class="btn btn-light btn-sm" data-act="hotel-rooms" data-id="' + h.id + '" style="border:1px solid var(--line)">' + t('hotels.viewRooms') + '</button>' +
       '</div>' + liveMini('hotels') + '</div></article>';
   }
