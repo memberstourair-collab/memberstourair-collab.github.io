@@ -11131,12 +11131,24 @@ var GENIE_AI_CONFIG = {
     return t('d.doc.invoice') + (d.invoice.no ? ' · ' + d.invoice.no : '');
   }
 
+  /* file names keep Korean / Japanese / Chinese characters — a Korean agency
+     wants to recognise the document in its downloads folder */
+  function docsSlug(s) {
+    var out = String(s == null ? '' : s).trim()
+      .replace(/[\\/:*?"<>|]+/g, ' ')
+      .replace(/[\s·]+/g, '_')
+      .replace(/_+/g, '_')
+      .replace(/^_+|_+$/g, '');
+    if (out.length > 60) out = out.slice(0, 60).replace(/_+[^_]*$/, '');
+    return out;
+  }
+
   function docsFileName() {
     var d = docsObj();
     var tag = d.tab === 'quote' ? 'Quotation' : d.tab === 'itin' ? 'Itinerary' : 'Invoice';
     var raw = d.tab === 'quote' ? (d.quote.event || d.quote.no)
       : d.tab === 'itin' ? (d.itin.title || d.itin.start) : (d.invoice.no || '');
-    return 'MEMBERS_Tour_' + tag + '_' + (fileSlug(raw || tag) || tag) + '.html';
+    return 'MEMBERS_Tour_' + tag + '_' + (docsSlug(raw) || docsSlug(docsStamp())) + '.html';
   }
 
   /* --------------------------------------------------- preview + sizing */
