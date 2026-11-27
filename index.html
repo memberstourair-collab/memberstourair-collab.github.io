@@ -12315,7 +12315,8 @@ var GENIE_AI_CONFIG = {
     ctx.fillRect(0, h - 6, w, 6);
     ctx.fillStyle = '#38A39D';
     ctx.fillRect(0, h - 6, w * p, 6);
-    stDrawCap(ctx, time, w, h);
+    /* the caption itself is the HTML overlay above the stage (#stCap), so it is
+       deliberately not drawn into the sample canvas — only the export burns it in. */
   }
 
   /* subtitles burned into any 2D context (the preview canvas and the export) */
