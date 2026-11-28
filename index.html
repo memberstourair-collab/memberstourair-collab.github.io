@@ -2940,17 +2940,17 @@ input.st-range::-moz-range-thumb{width:13px;height:13px;border-radius:50%;backgr
 .mp-sum b{display:block;font-size:18px;font-weight:900;color:#0E5B52;line-height:1.25;letter-spacing:-.02em}
 .mp-caption{margin:7px 2px 2px;font-size:11px;font-weight:800;color:#6A8794}
 .mp-legs{background:#fff;border:1px solid var(--line);border-radius:15px;padding:2px 12px}
-.mp-leg{display:flex;align-items:center;gap:9px;padding:10px 0;border-bottom:1px solid #EEF4F3;min-width:0}
+.mp-leg{display:flex;flex-wrap:wrap;align-items:flex-start;gap:2px 9px;padding:10px 0;
+  border-bottom:1px solid #EEF4F3;min-width:0}
 .mp-leg:last-child{border-bottom:0}
-.mp-legnum{flex:0 0 24px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;
-  color:#fff;font-size:11.5px;font-weight:900}
-.mp-legtext{flex:1 1 auto;min-width:0;font-size:13px;font-weight:800;color:#16323F;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mp-legnum{order:1;flex:0 0 24px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;
+  color:#fff;font-size:11.5px;font-weight:900;margin-top:1px}
+.mp-legtext{order:2;flex:1 1 auto;min-width:0;font-size:13px;font-weight:800;color:#16323F;line-height:1.3}
 .mp-legtext em{font-style:normal;color:#7B96A2;font-weight:800;font-size:11.5px}
 .mp-legtext i{font-style:normal;color:#9DB4BE}
-.mp-legmeta{flex:0 0 auto;font-size:11.5px;font-weight:800;color:#3C6072;white-space:nowrap}
-.mp-legnavbtn{flex:0 0 32px;width:32px;height:32px;border-radius:9px;border:0;background:#F1FAF7;
-  color:#1E7C74;cursor:pointer;display:grid;place-items:center}
+.mp-legmeta{order:4;flex:0 0 100%;padding-left:33px;font-size:11.5px;font-weight:800;color:#3C6072}
+.mp-legnavbtn{order:3;flex:0 0 30px;width:30px;height:30px;border-radius:9px;border:0;background:#F1FAF7;
+  color:#1E7C74;cursor:pointer;display:grid;place-items:center;margin-left:auto}
 .mp-legnavbtn svg{width:15px;height:15px}
 .mp-dayhd{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0 2px;
   font-size:11.5px;font-weight:900;color:#20475A}
@@ -3016,13 +3016,8 @@ input.st-range::-moz-range-thumb{width:13px;height:13px;border-radius:50%;backgr
 @media (max-width:640px){
   .mp-mapbar .mp-seg{flex:1 1 100%}
   .mp-mapbar{row-gap:5px}
-  /* on a phone the leg keeps its two ends readable: text may take two lines,
-     the km / minutes drop to a second line under it */
-  .mp-leg{flex-wrap:wrap;align-items:flex-start;gap:2px 8px;padding:9px 0}
-  .mp-legnum{order:1;margin-top:1px}
-  .mp-legtext{order:2;flex:1 1 auto;white-space:normal;overflow:visible;line-height:1.3;font-size:12.5px}
-  .mp-legnavbtn{order:3;margin-left:auto;width:30px;height:30px}
-  .mp-legmeta{order:4;flex:0 0 100%;padding-left:32px;font-size:11px;color:#5A7C8B}
+  .mp-legtext{font-size:12.5px}
+  .mp-legmeta{font-size:11px;padding-left:32px}
 }
 @media (max-width:370px){
   .mp-seg button{font-size:10.5px;padding:6px 4px}
