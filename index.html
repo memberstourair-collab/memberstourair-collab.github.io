@@ -16793,19 +16793,20 @@ var GENIE_AI_CONFIG = {
     { name: 'iq.s.4.name', theme: 'fit', pax: 6, rg: 'rg.reg.hanoi', dates: '2026.12.28–01.01' },
     { name: 'iq.s.5.name', theme: 'other', pax: 18, rg: 'rg.reg.seoul', dates: '2027.03.11–14' }
   ];
-  var BQ_HOME = { tab: 'build', open: false, add: false, items: [], inq: [], pax: [],
+  var BQ_HOME = { tab: 'build', open: false, add: false, mrz: '', items: [], inq: [], pax: [],
                   form: { region: '', theme: 'golf', flight: '', seats: '', price: '', cond: '', contact: '' } };
 
   function bqState() {
     if (BQ) return BQ;
     var raw = readStore(BQ_KEY, null);
-    var d = { tab: 'build', open: false, add: false, items: [], inq: [], pax: [],
+    var d = { tab: 'build', open: false, add: false, mrz: '', items: [], inq: [], pax: [],
               form: { region: '', theme: 'golf', flight: '', seats: '', price: '', cond: '', contact: '' } };
     if (raw && typeof raw === 'object') {
       /* the open tab itself is not persisted: a fresh visit starts on the
          builder, while listings / enquiries / passports are kept */
       d.open = !!raw.open;
       d.add = !!raw.add;
+      if (typeof raw.mrz === 'string') d.mrz = raw.mrz;
       if (raw.form && typeof raw.form === 'object') {
         for (var f in d.form) if (typeof raw.form[f] === 'string') d.form[f] = raw.form[f];
         if (BQ_THEMES.indexOf(d.form.theme) < 0) d.form.theme = 'golf';
@@ -16819,7 +16820,7 @@ var GENIE_AI_CONFIG = {
   }
   function bqSave() {
     var d = bqState();
-    writeStore(BQ_KEY, { open: d.open, add: d.add, items: d.items, inq: d.inq, pax: d.pax, form: d.form });
+    writeStore(BQ_KEY, { open: d.open, add: d.add, mrz: d.mrz, items: d.items, inq: d.inq, pax: d.pax, form: d.form });
   }
   function bqMoney(v) {
     var n = parseInt(v, 10);
@@ -17157,7 +17158,7 @@ var GENIE_AI_CONFIG = {
         '</div>' +
         '<div class="pp-mrz">' +
         '<label class="pp-lab" for="ppMrz">' + esc(t('pp.mrz')) + '</label>' +
-        '<textarea id="ppMrz" rows="2" spellcheck="false" autocapitalize="characters" placeholder="' + esc(t('pp.mrzPh')) + '"></textarea>' +
+        '<textarea id="ppMrz" rows="2" spellcheck="false" autocapitalize="characters" placeholder="' + esc(t('pp.mrzPh')) + '">' + esc(d.mrz || '') + '</textarea>' +
         '<div class="pp-row">' +
         '<button type="button" class="btn btn-primary pp-btn" data-act="pp-parse">' + ic.check + esc(t('pp.parse')) + '</button>' +
         '<button type="button" class="btn btn-light pp-btn" data-act="pp-sample">' + ic.plus + esc(t('pp.sample')) + '</button>' +
@@ -17289,6 +17290,7 @@ var GENIE_AI_CONFIG = {
   function ppParseNow() {
     var ta = document.getElementById('ppMrz');
     var raw = ta ? ta.value : '';
+    bqState().mrz = raw;
     var p = ppParse(raw);
     if (!p) { toast(t('pp.err.mrz')); return; }
     if (!ppAdd(p)) { ppRepaint(); return; }
