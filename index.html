@@ -3692,7 +3692,16 @@ input.st-range::-moz-range-thumb{width:13px;height:13px;border-radius:50%;backgr
 .pp-btn{height:40px !important;padding:0 12px !important;font-size:11.5px !important;font-weight:800;gap:5px;
   flex:1 1 0;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pp-btn svg{width:14px;height:14px;flex:0 0 14px}
-.pp-manual{margin-top:14px;padding-top:12px;border-top:1px dashed #E1EAEE}
+.pp-manual{margin-top:12px}
+.pp-manual-h{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:12px;
+  border-top:1px dashed #E1EAEE;margin-bottom:6px}
+.pp-manual-h .pp-lab{margin-bottom:0}
+.pp-fold{background:none;border:0;color:#8A98A6;font-size:10.5px;font-weight:800;cursor:pointer;
+  font-family:inherit;text-decoration:underline;padding:4px}
+.pp-addtoggle{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:40px;
+  border:1px dashed #BFDCD8;border-radius:12px;background:#F7FCFB;color:#12695C;font-size:11.5px;
+  font-weight:800;cursor:pointer;font-family:inherit;margin-top:12px}
+.pp-addtoggle svg{width:14px;height:14px}
 .pp-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .pp-f{display:flex;flex-direction:column;gap:4px;min-width:0}
 .pp-f.full{grid-column:1 / -1}
@@ -16783,17 +16792,18 @@ var GENIE_AI_CONFIG = {
     { name: 'iq.s.4.name', theme: 'fit', pax: 6, rg: 'rg.reg.hanoi', dates: '2026.12.28–01.01' },
     { name: 'iq.s.5.name', theme: 'other', pax: 18, rg: 'rg.reg.seoul', dates: '2027.03.11–14' }
   ];
-  var BQ_HOME = { tab: 'build', open: false, items: [], inq: [], pax: [],
+  var BQ_HOME = { tab: 'build', open: false, add: false, items: [], inq: [], pax: [],
                   form: { region: '', theme: 'golf', flight: '', seats: '', price: '', cond: '', contact: '' } };
 
   function bqState() {
     if (BQ) return BQ;
     var raw = readStore(BQ_KEY, null);
-    var d = { tab: 'build', open: false, items: [], inq: [], pax: [],
+    var d = { tab: 'build', open: false, add: false, items: [], inq: [], pax: [],
               form: { region: '', theme: 'golf', flight: '', seats: '', price: '', cond: '', contact: '' } };
     if (raw && typeof raw === 'object') {
       if (raw.tab === 'board') d.tab = 'board';
       d.open = !!raw.open;
+      d.add = !!raw.add;
       if (raw.form && typeof raw.form === 'object') {
         for (var f in d.form) if (typeof raw.form[f] === 'string') d.form[f] = raw.form[f];
         if (BQ_THEMES.indexOf(d.form.theme) < 0) d.form.theme = 'golf';
@@ -16807,7 +16817,7 @@ var GENIE_AI_CONFIG = {
   }
   function bqSave() {
     var d = bqState();
-    writeStore(BQ_KEY, { tab: d.tab, open: d.open, items: d.items, inq: d.inq, pax: d.pax, form: d.form });
+    writeStore(BQ_KEY, { tab: d.tab, open: d.open, add: d.add, items: d.items, inq: d.inq, pax: d.pax, form: d.form });
   }
   function bqMoney(v) {
     var n = parseInt(v, 10);
@@ -17151,8 +17161,10 @@ var GENIE_AI_CONFIG = {
         '<button type="button" class="btn btn-light pp-btn" data-act="pp-sample">' + ic.plus + esc(t('pp.sample')) + '</button>' +
         '</div></div>' +
         '<div class="pp-manual">' +
-        '<span class="pp-lab">' + esc(t('pp.manual')) + '</span>' +
-        '<div class="pp-grid">' +
+        (d.add ? '<div class="pp-manual-h"><span class="pp-lab">' + esc(t('pp.manual')) + '</span>' +
+          '<button type="button" class="pp-fold" data-act="pp-manual-open">' + esc(t('pp.close')) + '</button></div>'
+          : '<button type="button" class="pp-addtoggle" data-act="pp-manual-open">' + ic.plus + esc(t('pp.manual')) + '</button>') +
+        (d.add ? '<div class="pp-grid">' +
         '<label class="pp-f full"><span>' + esc(t('pp.h.name')) + '</span><input id="ppName" type="text" maxlength="40" placeholder="HONG GILDONG"></label>' +
         '<label class="pp-f"><span>' + esc(t('pp.h.no')) + '</span><input id="ppNo" type="text" maxlength="12" placeholder="M12345678" autocapitalize="characters"></label>' +
         '<label class="pp-f"><span>' + esc(t('pp.h.dob')) + '</span><input id="ppDob" type="date"></label>' +
@@ -17164,7 +17176,8 @@ var GENIE_AI_CONFIG = {
           return '<option value="' + c + '">' + esc(t('pp.nat.' + c)) + '</option>';
         }).join('') + '</select></label>' +
         '</div>' +
-        '<button type="button" class="btn btn-light btn-block pp-addbtn" data-act="pp-manual">' + ic.plus + esc(t('pp.manual')) + '</button>' +
+        '<button type="button" class="btn btn-primary btn-block pp-addbtn" data-act="pp-manual">' + ic.plus + esc(t('pp.manual')) + '</button>' +
+        '</div>' : '' ) +
         '</div>' +
         '<div class="pp-list-h"><b>' + esc(t('pp.list.title')) + '</b><span>' + esc(t('pp.list.count', { n: n })) + '</span></div>' +
         (n ? '<ol class="pp-list">' + d.pax.map(ppRow).join('') + '</ol>'
@@ -17387,6 +17400,13 @@ var GENIE_AI_CONFIG = {
     if (act === 'pp-toggle') {
       var s = bqState();
       s.open = !s.open;
+      bqSave();
+      ppRepaint();
+      return;
+    }
+    if (act === 'pp-manual-open') {
+      var m = bqState();
+      m.add = !m.add;
       bqSave();
       ppRepaint();
       return;
