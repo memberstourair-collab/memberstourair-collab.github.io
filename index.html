@@ -3535,7 +3535,7 @@ input.st-range::-moz-range-thumb{width:13px;height:13px;border-radius:50%;backgr
 .bz-tab-t b{display:block;font-size:12.5px;font-weight:800;color:var(--navy);letter-spacing:-.02em;
   line-height:1.2;word-break:keep-all;overflow-wrap:anywhere}
 .bz-tab-t em{display:block;font-size:10px;color:var(--muted);font-style:normal;margin-top:2px;
-  line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  line-height:1.3;word-break:keep-all;overflow-wrap:anywhere}
 .bz-tab-n{flex:0 0 auto;min-width:20px;height:20px;padding:0 6px;border-radius:999px;
   background:#12695C;color:#fff;font-size:10.5px;font-weight:900;display:grid;place-items:center}
 .bz-tab.on{border-color:var(--teal);box-shadow:0 0 0 2px rgba(42,140,130,.18),var(--shadow-sm);
@@ -7285,9 +7285,10 @@ var GENIE_AI_CONFIG = {
       '<div class="qhero-chips">' + chips + '</div>' +
       '<button type="button" class="btn btn-primary" data-act="q-start">' + ic.compass + t('quote.hero.cta') + '</button>' +
       '</div></div></div>';
-    /* two tabs: the quote builder (as before) and the B2B clearance board */
-    if (bqState().tab === 'board') return hero + bqTabs() + bqBoard();
-    return hero + bqTabs() +
+    /* the switcher sits first (clear of the floating buttons on a 390 px phone);
+       the builder keeps the quote hero, the board brings its own */
+    if (bqState().tab === 'board') return bqTabs() + bqBoard();
+    return bqTabs() + hero +
       rgBand() +
       '<div class="container">' + iqCard() +
       '<div class="qwrap" id="qWrap">' +
@@ -16801,7 +16802,8 @@ var GENIE_AI_CONFIG = {
     var d = { tab: 'build', open: false, add: false, items: [], inq: [], pax: [],
               form: { region: '', theme: 'golf', flight: '', seats: '', price: '', cond: '', contact: '' } };
     if (raw && typeof raw === 'object') {
-      if (raw.tab === 'board') d.tab = 'board';
+      /* the open tab itself is not persisted: a fresh visit starts on the
+         builder, while listings / enquiries / passports are kept */
       d.open = !!raw.open;
       d.add = !!raw.add;
       if (raw.form && typeof raw.form === 'object') {
@@ -16817,7 +16819,7 @@ var GENIE_AI_CONFIG = {
   }
   function bqSave() {
     var d = bqState();
-    writeStore(BQ_KEY, { tab: d.tab, open: d.open, add: d.add, items: d.items, inq: d.inq, pax: d.pax, form: d.form });
+    writeStore(BQ_KEY, { open: d.open, add: d.add, items: d.items, inq: d.inq, pax: d.pax, form: d.form });
   }
   function bqMoney(v) {
     var n = parseInt(v, 10);
