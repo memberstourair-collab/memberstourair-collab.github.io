@@ -3068,7 +3068,8 @@ input.st-range::-moz-range-thumb{width:13px;height:13px;border-radius:50%;backgr
   text-align:left;padding:10px;border-radius:14px;border:1px solid var(--line);background:#fff;min-width:0}
 .x6-es-flag{display:inline-grid;place-items:center;min-width:26px;height:20px;padding:0 4px;border-radius:6px;
   background:#E6F4F1;color:#0A6A5F;font-size:9.5px;font-weight:900;letter-spacing:.04em;line-height:1}
-.x6-es-n{font-size:11.5px;font-weight:800;color:var(--navy);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.x6-es-n{font-size:11.5px;font-weight:800;color:var(--navy);display:-webkit-box;-webkit-line-clamp:2;
+  -webkit-box-orient:vertical;overflow:hidden;line-height:1.25;word-break:keep-all}
 .x6-es-p{grid-column:1 / -1;font-size:11.5px;font-weight:800;color:var(--teal);letter-spacing:-.01em}
 .x6-es-p i{font-style:normal;font-weight:600;color:var(--muted);font-size:9.5px}
 .x6-es-c.on{border-color:#7CC3B8;background:#EEF8F6;box-shadow:0 0 0 2px rgba(42,140,130,.12)}
@@ -3365,6 +3366,7 @@ input.st-range::-moz-range-thumb{width:13px;height:13px;border-radius:50%;backgr
 .x6-tier > small{font-size:10px;opacity:.85;font-weight:700}
 .x6-tier-p{height:5px;border-radius:3px;background:rgba(255,255,255,.25);margin-top:9px;overflow:hidden}
 .x6-tier-p i{display:block;height:100%;background:#fff;border-radius:3px}
+.x6-tier + .x6-krow{margin-top:12px}
 .x6-tier > p{font-size:10.3px;margin-top:6px;opacity:.92;line-height:1.4}
 .x6-ledger{margin-top:4px}
 .x6-lrow{display:flex;justify-content:space-between;gap:8px;font-size:11px;color:#41556A;padding:6px 0;
@@ -3388,7 +3390,8 @@ input.st-range::-moz-range-thumb{width:13px;height:13px;border-radius:50%;backgr
 .x6-vt-n{grid-area:n;font-size:10px;color:var(--muted);font-weight:800}
 .x6-vt-bar{grid-area:b;display:block;height:4px;border-radius:2px;background:#EDF1F3;overflow:hidden}
 .x6-vt-bar i{display:block;height:100%;background:linear-gradient(90deg,#38A39D,#2A8C82);border-radius:2px}
-.x6-vt-share{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.x6-vt-share{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+.x6-vt-share .x6-btn{width:100%}
 .x6-vt-form{margin-top:10px;padding-top:2px}
 
 /* ---- Genie menu translator panel (inside the drawer) ---- */
@@ -15903,7 +15906,7 @@ var GENIE_AI_CONFIG = {
     }));
     return '<div class="x6-pt">' +
       '<div class="x6-tier t-' + T.tier.id + '">' +
-      '<span class="x6-tier-b">' + ic.sparkle + t('x6.pt.tier.' + T.tier.id) + '</span>' +
+      '<span class="x6-tier-b">' + ic.star + t('x6.pt.tier.' + T.tier.id) + '</span>' +
       '<b>' + pts.toLocaleString('en-US') + '<i>P</i></b>' +
       '<small>' + t('x6.pt.balance') + '</small>' +
       '<div class="x6-tier-p"><i style="width:' + pct + '%"></i></div>' +
