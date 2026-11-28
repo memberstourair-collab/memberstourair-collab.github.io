@@ -2902,8 +2902,7 @@ input.st-range::-moz-range-thumb{width:13px;height:13px;border-radius:50%;backgr
 .mp-legend i{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:999px;
   background:rgba(255,255,255,.94);font-size:10px;font-weight:800;color:#20475A;font-style:normal}
 .mp-legend i b{display:inline-block;width:7px;height:7px;border-radius:50%}
-.mp-attr{position:absolute;right:6px;bottom:5px;font-size:9px;color:#3D6577;background:rgba(255,255,255,.82);
-  padding:1px 4px;border-radius:5px}
+.mp-attr-line{margin:0;font-size:9.5px;font-weight:700;color:#7A96A2;text-align:right}
 .mp-ctl{position:absolute;right:7px;top:7px;display:flex;flex-direction:column;gap:5px}
 .mp-ctl button{width:36px;height:36px;border-radius:11px;border:1px solid rgba(22,78,99,.16);
   background:rgba(255,255,255,.96);color:#20475A;cursor:pointer;display:grid;place-items:center}
@@ -13903,7 +13902,6 @@ var GENIE_AI_CONFIG = {
       '<svg class="mp-ov" id="mpOv" aria-hidden="true"></svg>' +
       '<div class="mp-tilenote" id="mpTileNote" hidden>' + t('mp.tile.none') + '</div>' +
       '<div class="mp-legend" id="mpLegend"></div>' +
-      '<div class="mp-attr">' + t('mp.attrib') + '</div>' +
       '<div class="mp-ctl">' +
       '<button type="button" data-act="mp-zoom" data-v="1" aria-label="' + t('mp.zoom.in') + '">' +
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>' +
@@ -13913,6 +13911,7 @@ var GENIE_AI_CONFIG = {
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>' +
       '</div></div>' +
       '<div class="mp-gframe" id="mpGFrame" hidden></div>' +
+      '<p class="mp-attr-line">' + t('mp.attrib') + '</p>' +
       '<p class="mp-note">' + t('mp.demo.note') + '</p>' +
       '</div></div></div>';
   }
